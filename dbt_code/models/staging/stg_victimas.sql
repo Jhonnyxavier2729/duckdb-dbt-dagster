@@ -1,11 +1,4 @@
-{# {{ config(materialized='table') }}
+{{ config(materialized='view') }}
 
-SELECT *
-FROM read_csv_auto(
-    '../Notebook/input/entrada.txt',
-    delim='»',
-    header=True,
-    encoding='latin-1',
-    ignore_errors=True,
-    all_varchar=True
-) #}
+-- Referencia a tabla raw cargada por Dagster
+SELECT * FROM raw.victimas
