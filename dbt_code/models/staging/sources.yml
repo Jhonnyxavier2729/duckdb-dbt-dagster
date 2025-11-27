@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Capa raw cargada por Dagster desde CSV"
+    schema: raw
+    tables:
+      - name: victimas
+        description: "Datos crudos de víctimas extraídos del archivo entrada.txt"
+        meta:
+          loader: "Dagster"
+          source_file: "entrada.txt"
