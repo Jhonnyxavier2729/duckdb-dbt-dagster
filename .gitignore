@@ -32,6 +32,10 @@ Thumbs.db
 Notebook/input/*.txt
 Notebook/output/*
 !Notebook/output/.gitkeep
+data/raw/*.txt
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
 
 # Created by https://www.toptal.com/developers/gitignore/api/dbt,venv,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=dbt,venv,python
