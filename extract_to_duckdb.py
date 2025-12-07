@@ -8,7 +8,7 @@ from pathlib import Path
 
 # Configuración
 INPUT_FILE = 'data/raw/entrada.txt'
-DATABASE_FILE = 'dbt_code/ads.duckdb'
+DATABASE_FILE = 'data/duckdb/ads.duckdb'
 
 def load_csv_to_duckdb():
     """Carga archivo CSV con encoding latin-1 a DuckDB"""

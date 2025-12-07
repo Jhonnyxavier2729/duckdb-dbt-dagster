@@ -34,8 +34,11 @@ Notebook/output/*
 !Notebook/output/.gitkeep
 data/raw/*.txt
 data/processed/*
+data/duckdb/*.duckdb
+data/duckdb/*.duckdb.wal
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+!data/duckdb/.gitkeep
 
 # Created by https://www.toptal.com/developers/gitignore/api/dbt,venv,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=dbt,venv,python

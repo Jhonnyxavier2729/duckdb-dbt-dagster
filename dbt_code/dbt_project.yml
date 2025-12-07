@@ -33,11 +33,11 @@ models:
   dbt_code:
     staging:
       schema: staging
-      materialized: table
+      +materialized: view
     intermediate:
       schema: intermediate
-      materialized: table
+      +materialized: table
     refined:
       schema: refined
-      materialized: table
+      +materialized: table
 
