@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: ref_victimas_cleaned
+    description: "Test final cleaned and deduplicated victims data"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          config:
+            severity: error
+          combination_of_columns:
+            - documento
+            - fecha_reporte
+    columns:
+      - name: documento
+        description: "Unique document ID (cedula/identification)"
+        data_tests:
+          - unique
+      - name: fecha_reporte
+        description: "Report date"
+        data_tests:
+          - not_null

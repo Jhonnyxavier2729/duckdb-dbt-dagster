@@ -11,5 +11,14 @@ sources:
         freshness:
           warn_after: {count: 16, period: day}  # Warning if data is older than 16 days
           error_after: {count: 20, period: day}  # Error if data is older than 20 days
+        columns:
+          - name: ORIGEN
+            description: "validate with the column origen has data"
+            data_tests:
+              - not_null
+          - name: FECHAREPORTE
+            description: "Report date"
+            data_tests:
+              - not_null
 
         

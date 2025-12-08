@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental',
-        unique_key='id_persona',
+        unique_key='documento',
         on_schema_change='fail'
     )
 }}
@@ -16,7 +16,7 @@ deduped AS (
     SELECT 
         *,
         ROW_NUMBER() OVER (
-            PARTITION BY id_persona 
+            PARTITION BY documento 
             ORDER BY fecha_reporte DESC NULLS LAST
         ) AS row_num
     FROM source
