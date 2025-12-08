@@ -36,6 +36,4 @@ models:
     intermediate:
       schema: intermediate
       +materialized: table
-    refined:
-      schema: refined
-      +materialized: table
+  

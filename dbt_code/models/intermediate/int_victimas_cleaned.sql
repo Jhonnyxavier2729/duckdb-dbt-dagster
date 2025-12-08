@@ -6,87 +6,82 @@ WITH source_data AS (
 
 cleaned AS (
     SELECT
-        -- Remover espacios y normalizar texto
-        TRIM(LOWER(ORIGEN)) AS origen,
-        TRIM(LOWER(FUENTE)) AS fuente,
-        TRIM(LOWER(PROGRAMA)) AS programa,
+        -- Clean text: TRIM whitespace and convert empty strings to NULL
+        NULLIF(TRIM(origen), '') AS origen,
+        NULLIF(TRIM(fuente), '') AS fuente,
+        NULLIF(TRIM(programa), '') AS programa,
+        NULLIF(TRIM(UPPER(tipo_documento)), '') AS tipo_documento,  -- Uppercase for consistency
         
+        -- Names 
+        NULLIF(TRIM(primer_nombre), '') AS primer_nombre,
+        NULLIF(TRIM(segundo_nombre), '') AS segundo_nombre,
+        NULLIF(TRIM(primer_apellido), '') AS primer_apellido,
+        NULLIF(TRIM(segundo_apellido), '') AS segundo_apellido,
+        NULLIF(TRIM(nombre_completo), '') AS nombre_completo,
         
+        -- Dates (already casted in staging)
+        fecha_nacimiento,
+        fecha_expedicion_documento,
+        fecha_ocurrencia,
+        fecha_reporte,
+        fecha_valoracion,
         
-        -- Documentos
-        TRIM(UPPER(TIPODOCUMENTO)) AS tipo_documento,
+        -- Text fields
+        NULLIF(TRIM(expedicion_documento), '') AS expedicion_documento,
+        NULLIF(TRIM(pertenencia_etnica), '') AS pertenencia_etnica,
+        NULLIF(TRIM(UPPER(genero)), '') AS genero,  -- Uppercase for consistency
+        NULLIF(TRIM(tipo_hecho), '') AS tipo_hecho,
+        NULLIF(TRIM(hecho), '') AS hecho,
         
+        -- IDs (already casted in staging)
+        id_persona,
+        id_hogar,
+        documento,
+        cod_dane_municipio_ocurrencia,
+        cod_dane_municipio_residencia,
+        cod_dane_declaracion,
+        cod_dane_llegada,
+        id_siniestro,
+        id_mi_jefe,
+        codigo_hecho,
+        cons_persona,
+        discapacidad,
+        registraduria,
         
-        -- Nombres 
-        TRIM(LOWER(PRIMERNOMBRE)) AS primer_nombre,
-        TRIM(LOWER(SEGUNDONOMBRE)) AS segundo_nombre,
-        TRIM(LOWER(PRIMERAPELLIDO)) AS primer_apellido,
-        TRIM(LOWER(SEGUNDOAPELLIDO)) AS segundo_apellido,
-        TRIM(LOWER(NOMBRECOMPLETO)) AS nombre_completo,
+        -- Locations
+        NULLIF(TRIM(zona_ocurrencia), '') AS zona_ocurrencia,
+        NULLIF(TRIM(ubicacion_ocurrencia), '') AS ubicacion_ocurrencia,
+        NULLIF(TRIM(zona_residencia), '') AS zona_residencia,
+        NULLIF(TRIM(ubicacion_residencia), '') AS ubicacion_residencia,
+        NULLIF(TRIM(direccion), '') AS direccion,
+        NULLIF(TRIM(pais), '') AS pais,
+        NULLIF(TRIM(ciudad), '') AS ciudad,
         
-        -- Fechas: convertir desde DD/MM/YYYY a formato ISO (YYYY-MM-DD)
-        TRY_STRPTIME(TRIM(FECHANACIMIENTO), '%d/%m/%Y')::DATE AS fecha_nacimiento,
-        TRY_STRPTIME(TRIM(FECHAEXPEDICIONDOCUMENTO), '%d/%m/%Y')::DATE AS fecha_expedicion_documento,
-        TRY_STRPTIME(TRIM(FECHAOCURRENCIA), '%d/%m/%Y')::DATE AS fecha_ocurrencia,
-        TRY_STRPTIME(TRIM(FEcharEPORTE), '%d/%m/%Y')::DATE AS fecha_reporte,
-        TRY_STRPTIME(TRIM(FECHAVALORACION), '%d/%m/%Y')::DATE AS fecha_valoracion,
+        -- Actors
+        NULLIF(TRIM(presunto_actor), '') AS presunto_actor,
+        NULLIF(TRIM(presunto_victimizante), '') AS presunto_victimizante,
         
-        -- Textos normalizados
-        NULLIF(TRIM(LOWER(EXPEDICIONDOCUMENTO)), '') AS expedicion_documento,
-        NULLIF(TRIM(LOWER(PERTENENCIAETNICA)), '') AS pertenencia_etnica,
-        NULLIF(TRIM(UPPER(GENERO)), '') AS genero,
-        NULLIF(TRIM(LOWER(TIPOHECHO)), '') AS tipo_hecho,
-        NULLIF(TRIM(LOWER(HECHO)), '') AS hecho,
+        -- Types
+        NULLIF(TRIM(tipo_poblacion), '') AS tipo_poblacion,
+        NULLIF(TRIM(tipo_victima), '') AS tipo_victima,
+        NULLIF(TRIM(tipo_desplazamiento), '') AS tipo_desplazamiento,
         
-        -- Códigos convertidos a BIGINT
-        TRY_CAST(TRIM(IDPERSONA) AS BIGINT) AS id_persona,
-        TRY_CAST(TRIM(IDHOGAR) AS BIGINT) AS id_hogar,
-        TRY_CAST(TRIM(DOCUMENTO) AS BIGINT) documento,
-        TRY_CAST(NULLIF(TRIM(CODDANEMUNICIPIOOCURRENCIA), '') AS BIGINT) AS cod_dane_municipio_ocurrencia,
-        TRY_CAST(NULLIF(TRIM(CODDANEMUNICIPIORESIDENCIA), '') AS BIGINT) AS cod_dane_municipio_residencia,
-        TRY_CAST(NULLIF(TRIM(CODDANEDECLARACION), '') AS BIGINT) AS cod_dane_declaracion,
-        TRY_CAST(NULLIF(TRIM(CODDANELLEGADA), '') AS BIGINT) AS cod_dane_llegada,
-        TRY_CAST(NULLIF(TRIM(IDSINIESTRO), '') AS BIGINT) AS id_siniestro,
-        TRY_CAST(NULLIF(TRIM(IDMIJEFE), '') AS BIGINT) AS id_mi_jefe,
-        TRY_CAST(NULLIF(TRIM(CODIGOHECHO), '') AS BIGINT) AS codigo_hecho,
-        TRY_CAST(NULLIF(TRIM(CONSPERSONA), '') AS BIGINT) AS cons_persona,
-        TRY_CAST(NULLIF(TRIM(DISCAPACIDAD), '') AS BIGINT) AS discapacidad,
-        TRY_CAST(NULLIF(TRIM(REGISTRADURIA), '') AS BIGINT) AS registraduria,
+        -- Contact
+        NULLIF(TRIM(num_telefono_fijo), '') AS num_telefono_fijo,
+        NULLIF(TRIM(num_telefono_celular), '') AS num_telefono_celular,
+        NULLIF(TRIM(email), '') AS email,
         
-        -- Ubicaciones
-        NULLIF(TRIM(LOWER(ZONAOCURRENCIA)), '') AS zona_ocurrencia,
-        NULLIF(TRIM(LOWER(UBICACIONOCURRENCIA)), '') AS ubicacion_ocurrencia,
-        NULLIF(TRIM(LOWER(ZONARESIDENCIA)), '') AS zona_residencia,
-        NULLIF(TRIM(LOWER(UBICACIONRESIDENCIA)), '') AS ubicacion_residencia,
-        NULLIF(TRIM(LOWER(DIRECCION)), '') AS direccion,
-        NULLIF(TRIM(LOWER(PAIS)), '') AS pais,
-        NULLIF(TRIM(LOWER(CIUDAD)), '') AS ciudad,
+        -- Status and others
+        NULLIF(TRIM(estado_victima), '') AS estado_victima,
+        NULLIF(TRIM(vigencia_documento), '') AS vigencia_documento,
+        NULLIF(TRIM(relacion), '') AS relacion,
         
-        -- Actores
-        NULLIF(TRIM(LOWER(PRESUNTOACTOR)), '') AS presunto_actor,
-        NULLIF(TRIM(LOWER(PRESUNTOVICTIMIZANTE)), '') AS presunto_victimizante,
+        -- Disability
+        NULLIF(TRIM(descripcion_discapacidad), '') AS descripcion_discapacidad,
         
-        -- Tipos
-        NULLIF(TRIM(LOWER(TIPOPOBLACION)), '') AS tipo_poblacion,
-        NULLIF(TRIM(LOWER(TIPOVICTIMA)), '') AS tipo_victima,
-        NULLIF(TRIM(LOWER(TIPODESPLAZAMIENTO)), '') AS tipo_desplazamiento,
-        
-        -- Contacto
-        NULLIF(TRIM(NUMTELEFONOFIJO), '') AS num_telefono_fijo,
-        NULLIF(TRIM(NUMTELEFONOCELULAR), '') AS num_telefono_celular,
-        NULLIF(TRIM(LOWER(EMAIL)), '') AS email,
-        
-        -- Estados y otros
-        NULLIF(TRIM(LOWER(ESTADOVICTIMA)), '') AS estado_victima,
-        NULLIF(TRIM(VIGENCIADOCUMENTO), '') AS vigencia_documento,
-        NULLIF(TRIM(LOWER(RELACION)), '') AS relacion,
-        
-        -- Discapacidad
-        NULLIF(TRIM(LOWER(DESCRIPCIONDISCAPACIDAD)), '') AS descripcion_discapacidad,
-        
-        -- Otros
-        NULLIF(TRIM(FUD_FICHA), '') AS fud_ficha,
-        NULLIF(TRIM(LOWER(AFECTACIONES)), '') AS afectaciones
+        -- Others
+        NULLIF(TRIM(fud_ficha), '') AS fud_ficha,
+        NULLIF(TRIM(afectaciones), '') AS afectaciones
         
     FROM source_data
 )
