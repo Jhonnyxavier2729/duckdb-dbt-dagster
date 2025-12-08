@@ -1,7 +1,7 @@
 {{ config(materialized='table') }}
 
 WITH source_data AS (
-    SELECT * FROM {{ ref('stg_victimas') }}
+    SELECT * FROM {{ ref('stg_victimas_start') }}
 ),
 
 cleaned AS (
