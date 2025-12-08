@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw data extracted from CSV files"
+    schema: raw
+    tables:
+      - name: victimas
+        description: "Victims table loaded from entrada.txt"
+        loaded_at_field: "FECHAREPORTE"  # Column indicating when the record was loaded
+        freshness:
+          warn_after: {count: 16, period: day}  # Warning if data is older than 16 days
+          error_after: {count: 20, period: day}  # Error if data is older than 20 days
+
+        
