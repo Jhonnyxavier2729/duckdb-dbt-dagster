@@ -7,6 +7,11 @@ __pycache__/
 *.pyd
 .Python
 
+# Variables de entorno (contiene credenciales sensibles)
+.env
+.env.local
+.env.*.local
+
 # dbt
 target/
 dbt_packages/
@@ -36,9 +41,13 @@ data/raw/*.txt
 data/processed/*
 data/duckdb/*.duckdb
 data/duckdb/*.duckdb.wal
+data/output/*.csv
+data/output/*.parquet
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/duckdb/.gitkeep
+!data/output/.gitkeep
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/dbt,venv,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=dbt,venv,python

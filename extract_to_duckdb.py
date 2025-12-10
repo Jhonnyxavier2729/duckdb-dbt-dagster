@@ -1,28 +1,28 @@
 """
-Script de extracción de datos usando DuckDB nativo
-Lee archivo CSV con delimitador especial y carga a DuckDB
+Data extraction script using native DuckDB
+Reads CSV file with special delimiter and loads to DuckDB
 """
 import duckdb
 import time
 from pathlib import Path
 
-# Configuración
+# Configuration
 INPUT_FILE = 'data/raw/entrada.txt'
 DATABASE_FILE = 'data/duckdb/ads.duckdb'
 
 def load_csv_to_duckdb():
-    """Carga archivo CSV con encoding latin-1 a DuckDB"""
-    print("Cargando CSV a DuckDB...")
+    """Load CSV file with latin-1 encoding to DuckDB"""
+    print("Loading CSV to DuckDB...")
     
     start_time = time.time()
     
-    # Conectar a la base de datos de dbt
+    # Connect to dbt database
     con = duckdb.connect(DATABASE_FILE)
     
-    # Crear schema raw si no existe
+    # Create raw schema if not exists
     con.execute("CREATE SCHEMA IF NOT EXISTS raw")
     
-    # Cargar datos
+    # Load data
     sql_query = f"""
         CREATE OR REPLACE TABLE raw.victimas AS
         SELECT *
@@ -39,15 +39,15 @@ def load_csv_to_duckdb():
     try:
         con.execute(sql_query)
         
-        # Obtener estadísticas
+        # Get statistics
         count = con.execute("SELECT COUNT(*) FROM raw.victimas").fetchone()[0]
         columns = con.execute("SELECT COUNT(*) FROM information_schema.columns WHERE table_name='victimas' AND table_schema='raw'").fetchone()[0]
         
-        print("Datos cargados exitosamente:")
-        print(f"   Registros: {count:,}")
-        print(f"   Columnas: {columns}")
-        print(f"   Base de datos: {DATABASE_FILE}")
-        print(f"   Tabla: raw.victimas")
+        print("Data loaded successfully:")
+        print(f"   Records: {count:,}")
+        print(f"   Columns: {columns}")
+        print(f"   Database: {DATABASE_FILE}")
+        print(f"   Table: raw.victimas")
         
     except Exception as e:
         print(f"Error: {e}")
@@ -56,7 +56,7 @@ def load_csv_to_duckdb():
         con.close()
     
     elapsed = time.time() - start_time
-    print(f"Tiempo total: {elapsed:.2f} segundos")
+    print(f"Total time: {elapsed:.2f} seconds")
 
 
 if __name__ == "__main__":
