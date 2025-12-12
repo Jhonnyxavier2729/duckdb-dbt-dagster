@@ -1,6 +1,4 @@
-
 -- Mart: Distribución por grupos de edad
-
 WITH base_data AS (
     SELECT DISTINCT
         documento,
@@ -31,5 +29,4 @@ SELECT
     COUNT(documento) AS valor
 FROM edad_calculada
 GROUP BY grupo_edad
-ORDER BY valor DESC
 

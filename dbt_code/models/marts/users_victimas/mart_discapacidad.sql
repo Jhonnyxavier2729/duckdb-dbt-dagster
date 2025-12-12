@@ -1,5 +1,4 @@
 -- Mart: Personas con discapacidad
-
 WITH base_data AS (
     SELECT DISTINCT
         documento,

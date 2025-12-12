@@ -1,11 +1,4 @@
-{{
-    config(
-        materialized='table'
-    )
-}}
-
 -- Mart: Distribución por género
-
 WITH base_data AS (
     SELECT DISTINCT
         documento,

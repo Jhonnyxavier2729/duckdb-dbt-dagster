@@ -1,5 +1,4 @@
 -- Mart: Distribución por pertenencia étnica
-
 WITH base_data AS (
     SELECT DISTINCT
         documento,

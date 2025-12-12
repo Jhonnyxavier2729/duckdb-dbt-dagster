@@ -43,10 +43,12 @@ data/duckdb/*.duckdb
 data/duckdb/*.duckdb.wal
 data/output/*.csv
 data/output/*.parquet
+data/report/*.xlsx
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/duckdb/.gitkeep
 !data/output/.gitkeep
+!data/report/.gitkeep
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/dbt,venv,python
