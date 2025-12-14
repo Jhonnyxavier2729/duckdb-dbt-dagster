@@ -7,10 +7,17 @@ __pycache__/
 *.pyd
 .Python
 
-# Variables de entorno (contiene credenciales sensibles)
+# Environment variables (contains sensitive credentials)
 .env
 .env.local
 .env.*.local
+
+# Dagster temporary files
+.tmp_dagster_home*
+dagster_home/
+.dagster/
+.dagster_home/
+tmp*/
 
 # dbt
 target/

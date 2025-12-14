@@ -1,9 +1,9 @@
 import dagster as dg
 
-# Schedule que ejecuta el pipeline completo cada 5 minutos
+# Schedule that runs the complete pipeline every 5 minutes
 pipeline_schedule = dg.ScheduleDefinition(
     name="pipeline_schedule_5min",
-    cron_schedule="*/5 * * * *",  # Cada 5 minutos
-    target="*",  # Ejecuta todos los assets
+    cron_schedule="*/5 * * * *",  # Every 5 minutes
+    target="*",  # Run all assets
     default_status=dg.DefaultScheduleStatus.RUNNING,
 )
