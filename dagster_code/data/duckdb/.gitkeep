@@ -1,0 +1,2 @@
+# Este archivo mantiene la carpeta duckdb en git
+# Los archivos .duckdb no se versionan pero la carpeta sí existe
