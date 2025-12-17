@@ -7,6 +7,11 @@ __pycache__/
 *.pyd
 .Python
 
+#data
+dagster_code/data/raw/*
+dagster_code/data/report/*
+dagster_code/data/output/*
+
 # dbt
 target/
 dbt_packages/
