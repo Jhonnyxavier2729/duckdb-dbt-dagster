@@ -186,6 +186,7 @@ def _write_dataframe_to_worksheet(workbook, worksheet, df_pandas, start_row=0, s
         dg.AssetKey(["marts", "mart_ciudad"]),
         dg.AssetKey(["marts", "mart_discapacidad"])
     ],
+    kinds={"polars", "excel"},
     group_name="reporting"
 )
 def generate_excel_report(context: dg.AssetExecutionContext, duckdb: DuckDBResource):

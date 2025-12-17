@@ -12,7 +12,8 @@ DATABASE_FILE = str(BASE_DIR / "data" / "duckdb" / "ads.duckdb")
 
 
 @dg.asset(
-    group_name="ingestion"
+    group_name="ingestion",
+    kinds={"python", "duckdb"},
 )
 def load_csv_to_duckdb(context: dg.AssetExecutionContext, duckdb: DuckDBResource):
     """Load CSV file with latin-1 encoding to DuckDB"""

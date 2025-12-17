@@ -36,6 +36,9 @@ dagster_code/
 │           ├── assets.py                  # Punto de entrada de assets
 │           ├── resources.py               # Recursos (DuckDB, DBT)
 │           └── schedules.py               # Programación de ejecuciones
+├── tests/
+│   ├── __init__.py
+│   └── asset_checks.py                    # Validaciones de calidad (Asset Checks)
 ├── dbt_code/                              # Proyecto DBT
 │   ├── dbt_project.yml                    # Configuración DBT
 │   ├── profiles.yml                       # Perfiles de conexión
@@ -78,6 +81,13 @@ dagster_code/
 - **Dependencias automáticas** entre assets
 - **Scheduling** configurable
 - **UI visual** para monitoreo y ejecución
+- **Asset Checks** para validación de calidad de datos
+
+### 5. Validación de Calidad (Asset Checks)
+- Validaciones automáticas después de cada materialización
+- Checks blocking y non-blocking para control de flujo
+- Métricas de calidad de datos en tiempo real
+- Historial completo de validaciones en la UI
 
 ## Instalación
 
@@ -206,10 +216,43 @@ Modificar las funciones de visualización en `reporting_assets.py`:
 - `_create_vertical_bar_chart()`: Gráficos verticales
 - `_create_pie_chart()`: Gráficos de pastel
 
+### Agregar Validaciones (Asset Checks)
+
+Crear nuevos checks en `defs/checks.py`:
+
+```python
+@dg.asset_check(asset="tu_asset", blocking=False)
+def check_tu_validacion(duckdb: DuckDBResource) -> dg.AssetCheckResult:
+    """Descripción de la validación"""
+    # Lógica de validación
+    resultado = validar()
+    
+    return dg.AssetCheckResult(
+        passed=resultado,
+        description="Mensaje descriptivo",
+        metadata={"metrica": dg.MetadataValue.int(100)}
+    )
+```
+
+Ver [ASSET_CHECKS.md](dagster_code/ASSET_CHECKS.md) para documentación completa.
+
+## Validación de Calidad de Datos
+
+El pipeline incluye **15+ asset checks** automáticos que validan:
+
+✅ Existencia de tablas y schemas  
+✅ Presencia de datos (no vacío)  
+✅ Recuentos mínimos de registros  
+✅ Estructura de columnas esperada  
+✅ Creación exitosa de reportes  
+
+Los checks se ejecutan automáticamente después de materializar cada asset y los resultados se visualizan en la UI de Dagster. Ver detalles en [ASSET_CHECKS.md](dagster_code/ASSET_CHECKS.md).
+
 ## Monitoreo
 
 Dagster proporciona:
 - **Lineage visual**: Visualización de dependencias entre assets
+- **Asset Checks**: Validaciones de calidad en tiempo real
 - **Logs detallados**: Seguimiento de ejecuciones
 - **Metadata tracking**: Métricas de cada asset
 - **Run history**: Historial de ejecuciones
@@ -246,9 +289,7 @@ Para contribuir al proyecto:
 2. Hacer cambios y tests
 3. Crear pull request
 
-## Licencia
 
-[Tu Licencia Aquí]
 
 Open http://localhost:3000 in your browser to see the project.
 
